@@ -1,0 +1,192 @@
+#include <iostream>
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+using namespace std;
+int p[8] = {-2,-2,-1,-1,1,1,2,2};
+int q[8] = {-1,1,-2,2,-2,2,-1,1};
+int d=0,x,y,n,a[8][8];
+void inkq() {
+	cout << endl << "Cach di thu: " << ++d << ":" << endl;
+	for (int i=0; i<n; i++) {
+		for (int j=0; j<n; j++)
+			printf("%3d",a[i][j]);
+		cout << endl;
+	}
+	getch();
+}
+void tim(int x, int y, int k) {
+//if (k%5==1 || k>n*n) inkq(k-1);
+	if (k>n*n) inkq();
+	else
+		for (int i=0; i<8; i++) {
+			int x1=x+p[i],y1=y+q[i];
+			if (x1>=0 && x1<n && y1>=0 && y1<n && a[x1][y1]==0)
+			 {
+			 
+					a[x1][y1]=k;
+					tim(x1,y1,k+1);
+					a[x1][y1]=0;
+				}
+		}
+}
+int main() {
+	cout << "Kich thuoc ban co : ";
+	cin >> n;
+	cout << "Nhap vi tri xuat phat (x,y) :";
+	cin >> x >> y;
+	for (int i=0; i<n; i++)
+		for (int j=0; j<n; j++)
+			a[i][j]=0;
+	a[x][y]=1;
+	tim(x,y,2);
+	if (d==0)
+		cout << "Khong ton tai cach di thoa man";
+	else
+		cout << "Co tat ca " << d << " cach di thoa man";
+	getch();
+	return 0;
+
+
+}
+
+================================================================================
+
+Void nuocdi;
+{
+ 			<Kh?i t?o 1 danh sách các nu?c di k? ti?p>;
+Do {
+<L?a ch?n 1 nu?c di ke tiep t? danh sách>;
+If Ch?p nh?n du?c
+{
+<Ghi lai nuoc di>
+{
+If <Bàn co tr?ng>
+{
+Nuocdi;
+If <Nu?c di không thành công>
+			<H?y b? nu?c di tru?c dó>
+}
+}
+While ( nu?c di b?t thành)&&(v?n còn nu?c di)
+}
+
+-----------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+ 
+#define KICHTHUOC 5 // Kich thuoc cua ban co
+void nuocdi(int, int, int);
+void innuocdi(int BanCo[][KICHTHUOC]);
+void vebanco(void);
+ 
+// To chuc ban co la mang hai chieu
+ 
+int BanCo[KICHTHUOC][KICHTHUOC];
+ 
+// 8 cach di cua con ma
+int a[8] = {2, 2, 1, -1, -2, -2, -1, 1};
+int b[8] = {1, -1, -2, -2, -1, 1, 2, 2};
+ 
+int SoLoiGiai = 0;
+ 
+int main(void)
+{
+int i, j, m, n;
+ 
+clrscr();
+vebanco();
+ 
+for(i = 0; i < KICHTHUOC; i++)
+for(j = 0; j < KICHTHUOC; j++)
+{
+// Khoi dong tat ca cac o tren ban co deu chua di
+for(m = 0; m < KICHTHUOC; m++)
+for(n = 0; n < KICHTHUOC; n++)
+BanCo[m][n] = 0;
+ 
+// Chon nuoc di dau tien va goi ham de qui de di nuoc thu hai
+BanCo[i][j] = 1;
+nuocdi(2, i, j);
+}
+return 0;
+}
+ 
+// Ham NuocDi giup di nuoc thu n xuat phat tu o(x, y)
+void nuocdi(int n, int x, int y)
+{
+int i;
+char c;
+for(i = 0; i < 8; i++)
+{
+if(BanCo[x+a[i]][y+b[i]] == 0 && x+a[i] >= 0 && x+a[i] < KICHTHUOC
+&& y+b[i] >= 0 && y+b[i] < KICHTHUOC)
+{
+// Di nuoc thu n
+BanCo[x+a[i]][y+b[i]] = n;
+ 
+if(n == KICHTHUOC*KICHTHUOC) // Dkien dung, di duoc nuoc cuoi
+{
+innuocdi(BanCo);
+gotoxy(43, 4);
+printf(" Loi giai thu %d", ++SoLoiGiai);
+gotoxy(13, 25);
+printf("Nhan <ENTER> de tiep tuc tim loi giai ke. Nhan <ESC> de thoat");
+if(c = getch() == 27)
+exit(1);
+}
+else // Buoc de qui, goi di nuoc n+1
+nuocdi(n+1, x+a[i], y+b[i]);
+ 
+// lan nguoc
+BanCo[x+a[i]][y+b[i]] = 0;
+innuocdi(BanCo);
+gotoxy(43, 4);
+printf("Dang tim loi giai thu %d", SoLoiGiai+1);
+gotoxy(13, 25);
+printf(" Xin vui long cho doi, nhan phim <Ctrl-Break> de thoat... ");
+}
+}
+}
+ 
+void innuocdi(int BanCo[][KICHTHUOC])
+{
+int i, j;
+char c;
+randomize();
+textmode(C80);
+textbackground(BLACK);
+textcolor(1);
+for(i = 0; i < KICHTHUOC; i++)
+for(j = 0; j < KICHTHUOC; j++)
+{
+gotoxy(23+5*j, 8+2*i);
+textcolor(1 + random(15));
+if(BanCo[i][j] == 0 ? printf(" ") : cprintf("%2d", BanCo[i][j]));
+}
+}
+ 
+void vebanco()
+{
+printf("\n\t\t\t CHUONG TRINH MA DI TUAN\n");
+printf("\n\t\tKich thuoc ban co %dx%d", KICHTHUOC, KICHTHUOC);
+printf("\n\n\t\t 1 2 3 4 5 6 7 8");
+printf("\n\t\t ÚÄÄÄÄÂÄÄÄÄÂÄÄÄÄÂÄÄÄÄÂÄÄÄÄÂÄÄÄÄÂÄÄÄÄÂÄÄÄÄ¿");
+printf("\n\t\t 1 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 2 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 3 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 4 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 5 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 6 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 7 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ?ÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´");
+printf("\n\t\t 8 ³ ³ ³ ³ ³ ³ ³ ³ ³");
+printf("\n\t\t ÀÄÄÄÄÁÄÄÄÄÁÄÄÄÄÁÄÄÄÄÁÄÄÄÄÁÄÄÄÄÁÄÄÄÄÁÄÄÄÄÙ");
+}

@@ -1,0 +1,95 @@
+#include <iostream>
+#include <iomanip>
+
+
+using namespace std;
+
+void nhapdulieu(int *a, int *b, int &n)
+{
+	for(int i=1;i<=n;i++)
+	{
+		cout<<"a["<<i<<"]= "; // Nhap vao so can nang
+		cin>>a[i];
+	}
+
+	cout<<"Nhap gia tri "<<endl;
+
+	for(int i=1;i<=n;i++)
+	{
+		cout<<"b["<<i<<"]= ";
+		cin>>b[i];
+	}
+}
+
+
+
+int max(int &a, int &b)
+{
+	if(a>=b)
+	{
+		return a;
+	}
+	return b;
+}
+
+
+
+
+
+void doichieu(int *a, int *b, int &n, int &m)
+{
+	int F[100][100];
+
+	for(int i=1;i<=n;i++)
+	{
+		for(int j=1;j<=m;j++)
+		{
+
+			F[0][j]=0;
+			if(a[i]<=j && i>=1)
+			{
+				F[i][j] = max(F[i-1][j], b[i] + F[i-1][j-a[i]]);
+			}
+			else
+			{
+				F[i][j]=F[i-1][j];
+
+			}				
+	 		
+		}
+	}
+
+
+	for(int i=0;i<=n;i++)
+	{
+		for(int j=0;j<=m;j++)
+		{
+					
+			F[0][j]=0;
+			cout<<setw(3)<<F[i][j];
+		}
+		cout<<endl;
+
+	}
+
+}
+int main()
+{
+	int n;
+	int m;
+
+	cout<<"So do vat: ";
+	cin>>n;
+
+	cout<<"Khoi luong toi da: ";
+	cin>>m;
+
+	int *a=new int[n];
+	int *b=new int[n];
+
+	nhapdulieu(a,b,n);
+	doichieu(a,b,n,m);
+	delete[] a;
+	delete[] b;
+	return 0;
+}
